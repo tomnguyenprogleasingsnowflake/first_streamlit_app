@@ -10,6 +10,7 @@ streamlit.text('🥑🍞 Avocado Toast')
 streamlit.header('🍌🥭 Build Your Own Fruit Smoothie 🥝🍇')
 
 import pandas
+from urllib.error import URLError
 my_fruit_list = pandas.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
 my_fruit_list = my_fruit_list.set_index('Fruit')
 
@@ -33,16 +34,12 @@ try:
     streamlit.text(fruityvice_response.json())
     # write your own comment -what does the next line do? 
     fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
+    streamlit.dataframe(fruityvice_normalized)
     streamlit.write('The user entered ', fruit_choice)
 except URLError as e:
     streamlit.error()
 
 
-
-
-
-# write your own comment - what does this do?
-streamlit.dataframe(fruityvice_normalized)
 
 # don't run anything pass here while we troubleshoot
 streamlit.stop()
@@ -61,7 +58,7 @@ my_data_row = my_cur.fetchall()
 streamlit.dataframe(my_data_row)
 
 # input from user
-from urllib.error import URLError
+
 add_my_fruit = streamlit.text_input('What fruit would you like to add?','jackfruit')
 my_cur.execute("insert into fruit_load_list values ('from streamlit')")
 streamlit.write("Thanks for adding, ", add_my_fruit)
